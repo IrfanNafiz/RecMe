@@ -54,9 +54,9 @@ if __name__ == "__main__":
     # slice and save audio if in root directory but not in audio directory
     for file in files_in_root_directory:
         # check if a temp file was created by fetch-mic.py
-        if file == "temp.wav":
+        if file == "temp_record.wav":
             print(f"Found temporary file {file}. Slicing and saving...")
-        if file.endswith(".wav") and os.path.splitext(file)[0] == "temp":
+        if file.endswith(".wav") and os.path.splitext(file)[0] == "temp_record":
             input_file = os.path.join(DATASET_ROOT, file)
             output_folder = os.path.join(DATASET_ROOT, "temp", os.path.splitext(file)[0])
             slice_and_save_audio(input_file, output_folder)

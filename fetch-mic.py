@@ -23,9 +23,9 @@ DATASET_NOISE_PATH = os.path.join(DATASET_ROOT, NOISE_SUBFOLDER)
 
 def record_protocol(model="naive"):  # when record is pressed this will happen
     audio = record_audio()
-    # save_audio(audio) # temp save
-    if model == "naive":
-        guess = predict_speaker_naive(audio)  # TODO: make this predict_speaker_naive function, return false if no guess
+    save_audio(audio) # temp save
+
+
     elif model == "ml":
         guess = predict_speaker_ml(audio)  # TODO: make this predict_speaker_ml function, return false if no guess
 
@@ -59,7 +59,7 @@ def record_audio():
         audio = r.listen(source, timeout=5)
     return audio
 
-def save_audio(audio, filename='temp_record', path='/recordings/'):
+def save_audio(audio, filename='temp_record'):
     """
     Save audio as a WAV file in the specified path.
 
@@ -67,7 +67,7 @@ def save_audio(audio, filename='temp_record', path='/recordings/'):
     :param filename: Filename to save the audio (default: 'temp_record.wav').
     :param path: Directory path where the audio file will be saved (default: current directory).
     """
-    file_path = os.path.join(path, filename + '.wav')
+    file_path = os.path.join(DATASET_ROOT, filename + '.wav')
     with open(file_path, "wb") as file:
         file.write(audio.get_wav_data())
     print("Audio saved as", file_path)
