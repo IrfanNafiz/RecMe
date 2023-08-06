@@ -1,0 +1,5 @@
+# Ignore desktop.ini files
+desktop.ini
+
+# Ignore .wav audio files
+*.wav
