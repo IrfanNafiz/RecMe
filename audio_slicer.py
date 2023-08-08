@@ -8,6 +8,7 @@ import os
 
 DATASET_ROOT = "data\custom"
 DATASET_AUDIO_ROOT = os.path.join(DATASET_ROOT, "audio")
+DATASET_TEMP_ROOT = os.path.join(DATASET_ROOT, "temp")
 
 def slice_and_save_audio(input_file, output_folder):
     """Slice the input file into 1 second slices and save them in the output folder.
@@ -53,24 +54,22 @@ if __name__ == "__main__":
 
     # slice and save audio if in root directory but not in audio directory
     for file in files_in_root_directory:
-        # check if a temp file was created by fetch-mic.py
+        # check if a temp file was created by app.py
         if file == "temp_record.wav":
             print(f"Found temporary file {file}. Slicing and saving...")
-        if file.endswith(".wav") and os.path.splitext(file)[0] == "temp_record":
             input_file = os.path.join(DATASET_ROOT, file)
-            output_folder = os.path.join(DATASET_ROOT, "temp", os.path.splitext(file)[0])
+            output_folder = os.path.join(DATASET_TEMP_ROOT, os.path.splitext(file)[0])
             slice_and_save_audio(input_file, output_folder)
             print(f"Sliced and saved temporary file {file} into {output_folder}")
-
-        # check if file is a wav file and if it is not already processed in the audio directory
-        if file.endswith(".wav") and os.path.splitext(file)[0] in files_in_audio_directory:
-            print(f"{file} is already processed. Skipping...")
             continue
 
-        if file.endswith(".wav") and os.path.splitext(file)[0] not in files_in_audio_directory:
+        # check if file is a wav file and if it is not already processed in the audio directory
+        elif file.endswith(".wav") and os.path.splitext(file)[0] not in files_in_audio_directory:
             input_file = os.path.join(DATASET_ROOT, file)
             output_folder = os.path.join(DATASET_AUDIO_ROOT, os.path.splitext(file)[0])
             slice_and_save_audio(input_file, output_folder)
             print(f"Sliced and saved {file} into {output_folder}")
 
-
+        if file.endswith(".wav") and os.path.splitext(file)[0] in files_in_audio_directory and os.path.splitext(file)[0] != "temp_record":
+            print(f"{file} is already processed. Skipping...")
+            continue
