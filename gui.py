@@ -34,7 +34,7 @@ layout = [
 ]
 
 # Create the window
-window = sg.Window("RecMe", layout = [[]]).read()
+window = sg.Window("RecMe", layout = [[]], )
 
 # Set up audio recording
 recording = False

@@ -1,0 +1,487 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>MainWindow</class>
+ <widget class="QMainWindow" name="MainWindow">
+  <property name="windowModality">
+   <enum>Qt::WindowModal</enum>
+  </property>
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>921</width>
+    <height>565</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>RecMe - The Speaker Identifier</string>
+  </property>
+  <property name="windowIcon">
+   <iconset>
+    <normaloff>C:/Users/irfan/.designer/backup/icons/voice-recognition.png</normaloff>C:/Users/irfan/.designer/backup/icons/voice-recognition.png</iconset>
+  </property>
+  <property name="windowOpacity">
+   <double>4.000000000000000</double>
+  </property>
+  <widget class="QWidget" name="centralwidget">
+   <layout class="QGridLayout" name="gridLayout">
+    <item row="1" column="2">
+     <spacer name="horizontalSpacer_2">
+      <property name="orientation">
+       <enum>Qt::Horizontal</enum>
+      </property>
+      <property name="sizeHint" stdset="0">
+       <size>
+        <width>45</width>
+        <height>20</height>
+       </size>
+      </property>
+     </spacer>
+    </item>
+    <item row="2" column="1">
+     <spacer name="verticalSpacer">
+      <property name="orientation">
+       <enum>Qt::Vertical</enum>
+      </property>
+      <property name="sizeHint" stdset="0">
+       <size>
+        <width>20</width>
+        <height>39</height>
+       </size>
+      </property>
+     </spacer>
+    </item>
+    <item row="1" column="0">
+     <spacer name="horizontalSpacer">
+      <property name="orientation">
+       <enum>Qt::Horizontal</enum>
+      </property>
+      <property name="sizeHint" stdset="0">
+       <size>
+        <width>46</width>
+        <height>20</height>
+       </size>
+      </property>
+     </spacer>
+    </item>
+    <item row="0" column="1">
+     <spacer name="verticalSpacer_2">
+      <property name="orientation">
+       <enum>Qt::Vertical</enum>
+      </property>
+      <property name="sizeHint" stdset="0">
+       <size>
+        <width>20</width>
+        <height>40</height>
+       </size>
+      </property>
+     </spacer>
+    </item>
+    <item row="1" column="1">
+     <layout class="QVBoxLayout" name="verticalLayout_11">
+      <item>
+       <layout class="QVBoxLayout" name="verticalLayout_3">
+        <item>
+         <widget class="QLabel" name="labelAppTitle">
+          <property name="font">
+           <font>
+            <family>RomanD</family>
+            <pointsize>16</pointsize>
+           </font>
+          </property>
+          <property name="text">
+           <string>RecMe - The Speaker Identifier</string>
+          </property>
+          <property name="alignment">
+           <set>Qt::AlignCenter</set>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="Line" name="line">
+          <property name="orientation">
+           <enum>Qt::Horizontal</enum>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </item>
+      <item>
+       <layout class="QHBoxLayout" name="horizontalLayout_9">
+        <item>
+         <layout class="QVBoxLayout" name="verticalLayout_9">
+          <item>
+           <widget class="QLabel" name="folderLabel">
+            <property name="font">
+             <font>
+              <family>Rockwell</family>
+              <pointsize>12</pointsize>
+             </font>
+            </property>
+            <property name="text">
+             <string>People in Dataset</string>
+            </property>
+            <property name="alignment">
+             <set>Qt::AlignCenter</set>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QListWidget" name="folderListWidget"/>
+          </item>
+         </layout>
+        </item>
+        <item>
+         <layout class="QVBoxLayout" name="verticalLayout_10">
+          <item>
+           <widget class="QLabel" name="viewerLabel">
+            <property name="font">
+             <font>
+              <family>Rockwell</family>
+              <pointsize>12</pointsize>
+             </font>
+            </property>
+            <property name="text">
+             <string>Waveform Viewier</string>
+            </property>
+            <property name="alignment">
+             <set>Qt::AlignCenter</set>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <layout class="QVBoxLayout" name="verticalLayout_7">
+            <item>
+             <layout class="QVBoxLayout" name="verticalLayout_6">
+              <item>
+               <widget class="QTextEdit" name="waveformViewer"/>
+              </item>
+              <item>
+               <widget class="QPushButton" name="recordButton">
+                <property name="font">
+                 <font>
+                  <family>Rockwell</family>
+                 </font>
+                </property>
+                <property name="statusTip">
+                 <string>Press to start recording an audio for identification</string>
+                </property>
+                <property name="text">
+                 <string>Record</string>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QPushButton" name="retrainButton">
+                <property name="font">
+                 <font>
+                  <family>Rockwell</family>
+                 </font>
+                </property>
+                <property name="statusTip">
+                 <string>Press to re-train the machine learning model</string>
+                </property>
+                <property name="text">
+                 <string>Re-Train Model</string>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QPushButton" name="addButton">
+                <property name="font">
+                 <font>
+                  <family>Rockwell</family>
+                 </font>
+                </property>
+                <property name="statusTip">
+                 <string>Press to add a new person to the dataset saying the passphrase 10 times</string>
+                </property>
+                <property name="text">
+                 <string>Add Person</string>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QPushButton" name="browseButton">
+                <property name="font">
+                 <font>
+                  <family>Rockwell</family>
+                 </font>
+                </property>
+                <property name="statusTip">
+                 <string>Open the root dataset directory</string>
+                </property>
+                <property name="text">
+                 <string>Browse Dataset</string>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QPushButton" name="quitButton">
+                <property name="font">
+                 <font>
+                  <family>Rockwell</family>
+                 </font>
+                </property>
+                <property name="statusTip">
+                 <string>Press to quit the application</string>
+                </property>
+                <property name="text">
+                 <string>Quit</string>
+                </property>
+               </widget>
+              </item>
+             </layout>
+            </item>
+           </layout>
+          </item>
+         </layout>
+        </item>
+        <item>
+         <layout class="QVBoxLayout" name="verticalLayout_8">
+          <item>
+           <widget class="QLabel" name="consoleLabel">
+            <property name="font">
+             <font>
+              <family>Rockwell</family>
+              <pointsize>12</pointsize>
+             </font>
+            </property>
+            <property name="text">
+             <string>Console Output</string>
+            </property>
+            <property name="alignment">
+             <set>Qt::AlignCenter</set>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QTextBrowser" name="consoleBrowser"/>
+          </item>
+         </layout>
+        </item>
+       </layout>
+      </item>
+     </layout>
+    </item>
+   </layout>
+  </widget>
+  <widget class="QMenuBar" name="menubar">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>921</width>
+     <height>22</height>
+    </rect>
+   </property>
+   <widget class="QMenu" name="menuFile">
+    <property name="title">
+     <string>File</string>
+    </property>
+    <addaction name="actionRecord"/>
+    <addaction name="actionRe_Train"/>
+    <addaction name="actionAdd_Dataset"/>
+    <addaction name="actionQuit"/>
+   </widget>
+   <widget class="QMenu" name="menuEdit">
+    <property name="title">
+     <string>Edit</string>
+    </property>
+    <addaction name="actionBrowse_Dataset"/>
+    <addaction name="actionBrowse_Raw_Dataset"/>
+    <addaction name="actionBrowse_Noise_Dataset"/>
+   </widget>
+   <widget class="QMenu" name="menuView">
+    <property name="title">
+     <string>View</string>
+    </property>
+    <addaction name="actionNormal"/>
+    <addaction name="actionMaximize"/>
+   </widget>
+   <addaction name="menuFile"/>
+   <addaction name="menuEdit"/>
+   <addaction name="menuView"/>
+  </widget>
+  <widget class="QStatusBar" name="statusbar"/>
+  <action name="actionRecord">
+   <property name="icon">
+    <iconset>
+     <normaloff>C:/Users/irfan/.designer/backup/icons/record_icon.png</normaloff>C:/Users/irfan/.designer/backup/icons/record_icon.png</iconset>
+   </property>
+   <property name="text">
+    <string>Record</string>
+   </property>
+   <property name="statusTip">
+    <string>Record an audio for identification</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+R</string>
+   </property>
+  </action>
+  <action name="actionRe_Train">
+   <property name="icon">
+    <iconset>
+     <normaloff>C:/Users/irfan/.designer/backup/icons/retrain_icon.png</normaloff>C:/Users/irfan/.designer/backup/icons/retrain_icon.png</iconset>
+   </property>
+   <property name="text">
+    <string>Re-Train</string>
+   </property>
+   <property name="statusTip">
+    <string>Re-train the machine learning model</string>
+   </property>
+  </action>
+  <action name="actionAdd_Dataset">
+   <property name="icon">
+    <iconset>
+     <normaloff>C:/Users/irfan/.designer/backup/icons/add_dataset_icon.png</normaloff>C:/Users/irfan/.designer/backup/icons/add_dataset_icon.png</iconset>
+   </property>
+   <property name="text">
+    <string>Add Dataset</string>
+   </property>
+   <property name="statusTip">
+    <string>Add new person saying the passphrase 10 times</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+Shift+N</string>
+   </property>
+  </action>
+  <action name="actionQuit">
+   <property name="icon">
+    <iconset>
+     <normaloff>C:/Users/irfan/.designer/backup/icons/quit_icon.png</normaloff>C:/Users/irfan/.designer/backup/icons/quit_icon.png</iconset>
+   </property>
+   <property name="text">
+    <string>Quit</string>
+   </property>
+   <property name="statusTip">
+    <string>Quit the application</string>
+   </property>
+   <property name="shortcut">
+    <string>Esc</string>
+   </property>
+  </action>
+  <action name="actionBrowse_Dataset">
+   <property name="icon">
+    <iconset>
+     <normaloff>C:/Users/irfan/.designer/backup/icons/folder_icon.png</normaloff>C:/Users/irfan/.designer/backup/icons/folder_icon.png</iconset>
+   </property>
+   <property name="text">
+    <string>Browse Dataset </string>
+   </property>
+   <property name="statusTip">
+    <string>Open the directory of processed dataset</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+B</string>
+   </property>
+  </action>
+  <action name="actionBrowse_Raw_Dataset">
+   <property name="icon">
+    <iconset>
+     <normaloff>C:/Users/irfan/.designer/backup/icons/folder_icon.png</normaloff>C:/Users/irfan/.designer/backup/icons/folder_icon.png</iconset>
+   </property>
+   <property name="text">
+    <string>Browse Raw Dataset</string>
+   </property>
+   <property name="statusTip">
+    <string>Open the directory of raw dataset</string>
+   </property>
+  </action>
+  <action name="actionBrowse_Noise_Dataset">
+   <property name="icon">
+    <iconset>
+     <normaloff>C:/Users/irfan/.designer/backup/icons/folder_icon.png</normaloff>C:/Users/irfan/.designer/backup/icons/folder_icon.png</iconset>
+   </property>
+   <property name="text">
+    <string>Browse Noise Dataset</string>
+   </property>
+   <property name="statusTip">
+    <string>Open the directory of noise dataset</string>
+   </property>
+  </action>
+  <action name="actionNormal">
+   <property name="text">
+    <string>Normal</string>
+   </property>
+   <property name="statusTip">
+    <string>Resize the application to normal view</string>
+   </property>
+  </action>
+  <action name="actionMaximize">
+   <property name="text">
+    <string>Maximize</string>
+   </property>
+   <property name="statusTip">
+    <string>Maximize the application window</string>
+   </property>
+  </action>
+ </widget>
+ <resources/>
+ <connections>
+  <connection>
+   <sender>actionQuit</sender>
+   <signal>triggered()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>close()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>400</x>
+     <y>228</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>actionMaximize</sender>
+   <signal>triggered()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>showMaximized()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>400</x>
+     <y>228</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>actionNormal</sender>
+   <signal>triggered()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>showNormal()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>400</x>
+     <y>228</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>quitButton</sender>
+   <signal>clicked()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>close()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>460</x>
+     <y>475</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>460</x>
+     <y>282</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
+</ui>

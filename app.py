@@ -24,6 +24,11 @@ DATASET_AUDIO_PATH = os.path.join(DATASET_ROOT, AUDIO_SUBFOLDER)
 DATASET_NOISE_PATH = os.path.join(DATASET_ROOT, NOISE_SUBFOLDER)
 DATASET_TEMP_PATH = os.path.join(DATASET_ROOT, TEMP_SUBFOLDER)
 
+
+def percent_complete(percentage):
+    print(f"Total complete: {percentage}%")
+
+
 def record_audio():
     """
     Records a 10 second clip using sr.
@@ -78,10 +83,11 @@ def record_protocol():  # when record is pressed this will happen
         save_audio(audio) # temp save
         print("Audio saved successfully!")
 
+        # create waveform and fft plot for ui output
+        run_script('generate_plot.py')
+
     # slice and save temp audio in temp folder
-    script_path = 'audio_slicer.py'
-    # Run the script using os.system()
-    os.system(f'python {script_path}')
+    run_script('audio_slicer.py')
     print("Audio sliced, preprocessed and saved successfully!")
 
 
@@ -232,19 +238,22 @@ def prompt_name_and_save(audio):
 
 
 def wait_for_enter():
-    input("Press ENTER to continue.")
+    pass
+    # input("Press ENTER to continue.")
+
+
+def run_script(script_path):
+    os.system(f'python {script_path}')
 
 
 def retraining_protocol():
     # retrain the model by running train_model.py
-    script_path = 'train_model.py'
-    os.system(f'python {script_path}')
+    run_script('train_model.py')
 
 
 def preprocessing_protocol():
     # slice and save any new audio in audio folder
-    script_path = 'audio_slicer.py'
-    os.system(f'python {script_path}')
+    run_script('audio_slicer.py')
     print("Audio sliced, preprocessed and saved successfully!")
 
 
