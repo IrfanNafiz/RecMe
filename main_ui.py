@@ -22,20 +22,19 @@ from PyQt5.QtCore import QProcess
 AUDIO_SUBFOLDER = "audio"
 NOISE_SUBFOLDER = "noise"
 
-# Get the absolute path of the directory containing the current script
-PARENT_DIRECTORY = os.path.dirname(os.path.abspath(__file__))
-
 # Construct the path to dataset folder
-DATASET_ROOT = os.path.join(PARENT_DIRECTORY, 'data/custom')
+PARENT_DIRECTORY = os.path.dirname(os.path.abspath(__file__))
+DATASET_ROOT = os.path.join(PARENT_DIRECTORY, 'data\custom')
 
 DATASET_AUDIO_PATH = os.path.join(DATASET_ROOT, AUDIO_SUBFOLDER)
 DATASET_NOISE_PATH = os.path.join(DATASET_ROOT, NOISE_SUBFOLDER)
 
-APPLICATION_PATH = os.path.join(PARENT_DIRECTORY, 'app.py')
-TRAIN_MODEL_PATH = os.path.join(PARENT_DIRECTORY, 'train_model.py')
-PLOT_RECORD_PATH = os.path.join(PARENT_DIRECTORY, 'waveform_fft_output.png')
-EMPTY_PLOT_PATH = os.path.join(PARENT_DIRECTORY, 'empty_plot.png')
-DEMO_PATH = os.path.join(PARENT_DIRECTORY, 'pyqt5_ui\testing_stream_app.py')
+APPLICATION_PATH = 'app.py'
+TRAIN_MODEL_PATH = 'train_model.py'
+PLOT_RECORD_PATH = 'waveform_fft_output.png'
+EMPTY_PLOT_PATH = 'empty_plot.png'
+DEMO_PATH = 'testing_stream_app.py'
+ICON_PATH = 'pyqt5_ui\icons'
 
 # Enable High DPI display scaling
 if hasattr(QtCore.Qt, 'AA_EnableHighDpiScaling'):
@@ -46,6 +45,8 @@ if hasattr(QtCore.Qt, 'AA_UseHighDpiPixmaps'):
 
 # A regular expression, to extract the % complete.
 progress_re = re.compile("Total complete: (\d+)%")
+# prediction_re = re.compile("\nFinal prediction is that the speaker may be (\s+)")
+# probability_re = re.compile("Probability of prediction is \33[92m(\d+)\33[0m%")
 
 
 def simple_percent_parser(output):
@@ -59,13 +60,25 @@ def simple_percent_parser(output):
         return int(pc_complete)
 
 
-class EmbeddedConsoleWidget(RichJupyterWidget):
-    def __init__(self, parent=None):
-        super().__init__(parent)
-        self.kernel_manager = QtInProcessKernelManager()
-        self.kernel_manager.start_kernel()
-        self.kernel = self.kernel_manager.kernel
-        self.kernel.gui = 'qt'
+# def simple_prediction_parser(output):
+#     """
+#     Matches lines using the progress_re regex,
+#     returning a single integer for the % progress.
+#     """
+#     m = progress_re.search(output)
+#     if m:
+#         pc_complete = m.group(1)
+#         return int(pc_complete)
+
+
+
+# class EmbeddedConsoleWidget(RichJupyterWidget):
+#     def __init__(self, parent=None):
+#         super().__init__(parent)
+#         self.kernel_manager = QtInProcessKernelManager()
+#         self.kernel_manager.start_kernel()
+#         self.kernel = self.kernel_manager.kernel
+#         self.kernel.gui = 'qt'
 
 
 # class CaptureOutput:
@@ -86,7 +99,7 @@ class Ui_MainWindow(object):
         MainWindow.setWindowModality(QtCore.Qt.WindowModal)
         MainWindow.resize(921, 565)
         icon = QtGui.QIcon()
-        icon.addPixmap(QtGui.QPixmap("C:/Users/irfan/.designer/backup/icons/voice-recognition.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        icon.addPixmap(QtGui.QPixmap(os.path.join(ICON_PATH, "voice-recognition.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         MainWindow.setWindowIcon(icon)
         MainWindow.setWindowOpacity(4.0)
         self.centralwidget = QtWidgets.QWidget(MainWindow)
@@ -167,11 +180,11 @@ class Ui_MainWindow(object):
         # Set the textEdit widget to read-only
         self.waveformViewer.setReadOnly(True)
 
-        self.updateImageSize()
+        # self.updateImageSize()
 
         # comments the below two lines out if updateImageSize is used
-        # image_html = f'<img src="{self.image_path}">'
-        # self.waveformViewer.setHtml(image_html)
+        image_html = f'<img src="{self.image_path}">'
+        self.waveformViewer.setHtml(image_html)
 
 
         self.verticalLayout_6.addWidget(self.waveformViewer)
@@ -196,15 +209,6 @@ class Ui_MainWindow(object):
         self.addButton.setFont(font)
         self.addButton.setObjectName("addButton")
         self.verticalLayout_6.addWidget(self.addButton)
-
-        self.browseButton = QtWidgets.QPushButton(self.centralwidget)
-        self.browseButton.clicked.connect(self.start_process)
-        font = QtGui.QFont()
-        font.setFamily("Rockwell")
-        self.browseButton.setFont(font)
-        self.browseButton.setObjectName("sendCommand")
-
-        self.verticalLayout_6.addWidget(self.browseButton)
 
         self.quitButton = QtWidgets.QPushButton(self.centralwidget)
         font = QtGui.QFont()
@@ -242,12 +246,24 @@ class Ui_MainWindow(object):
 
         self.verticalLayout_8.addWidget(self.consoleBrowser)
 
+        self.horizontalLayout_10 = QtWidgets.QHBoxLayout()
+        self.horizontalLayout_10.setObjectName("horizontalLayout_10")
+
         # adding a command line to input commands
         self.commandLineEdit = QtWidgets.QLineEdit(self.centralwidget)
         self.commandLineEdit.setAlignment(QtCore.Qt.AlignCenter)
         self.commandLineEdit.setObjectName("commandLineEdit")
-        self.verticalLayout_8.addWidget(self.commandLineEdit)
+        self.horizontalLayout_10.addWidget(self.commandLineEdit)
 
+        self.browseButton = QtWidgets.QPushButton(self.centralwidget)
+        self.browseButton.clicked.connect(self.start_process)
+        font = QtGui.QFont()
+        font.setFamily("Rockwell")
+        self.browseButton.setFont(font)
+        self.browseButton.setObjectName("sendCommand")
+
+        self.horizontalLayout_10.addWidget(self.browseButton)
+        self.verticalLayout_8.addLayout(self.horizontalLayout_10)
         self.horizontalLayout_9.addLayout(self.verticalLayout_8)
         # add progress bar
         self.progressBar = QtWidgets.QProgressBar(self.centralwidget)
@@ -277,27 +293,27 @@ class Ui_MainWindow(object):
         MainWindow.setStatusBar(self.statusbar)
         self.actionRecord = QtWidgets.QAction(MainWindow)
         icon1 = QtGui.QIcon()
-        icon1.addPixmap(QtGui.QPixmap("C:/Users/irfan/.designer/backup/icons/record_icon.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        icon1.addPixmap(QtGui.QPixmap(os.path.join(ICON_PATH, "record_icon.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.actionRecord.setIcon(icon1)
         self.actionRecord.setObjectName("actionRecord")
         self.actionRe_Train = QtWidgets.QAction(MainWindow)
         icon2 = QtGui.QIcon()
-        icon2.addPixmap(QtGui.QPixmap("C:/Users/irfan/.designer/backup/icons/retrain_icon.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        icon2.addPixmap(QtGui.QPixmap(os.path.join(ICON_PATH, "retrain_icon.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.actionRe_Train.setIcon(icon2)
         self.actionRe_Train.setObjectName("actionRe_Train")
         self.actionAdd_Dataset = QtWidgets.QAction(MainWindow)
         icon3 = QtGui.QIcon()
-        icon3.addPixmap(QtGui.QPixmap("C:/Users/irfan/.designer/backup/icons/add_dataset_icon.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        icon3.addPixmap(QtGui.QPixmap(os.path.join(ICON_PATH, "add_dataset_icon.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.actionAdd_Dataset.setIcon(icon3)
         self.actionAdd_Dataset.setObjectName("actionAdd_Dataset")
         self.actionQuit = QtWidgets.QAction(MainWindow)
         icon4 = QtGui.QIcon()
-        icon4.addPixmap(QtGui.QPixmap("C:/Users/irfan/.designer/backup/icons/quit_icon.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        icon4.addPixmap(QtGui.QPixmap(os.path.join(ICON_PATH, "quit_icon.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.actionQuit.setIcon(icon4)
         self.actionQuit.setObjectName("actionQuit")
         self.actionBrowse_Dataset = QtWidgets.QAction(MainWindow)
         icon5 = QtGui.QIcon()
-        icon5.addPixmap(QtGui.QPixmap("C:/Users/irfan/.designer/backup/icons/folder_icon.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        icon5.addPixmap(QtGui.QPixmap(os.path.join(ICON_PATH, "folder_icon.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.actionBrowse_Dataset.setIcon(icon5)
         self.actionBrowse_Dataset.setObjectName("actionBrowse_Dataset")
         self.actionBrowse_Raw_Dataset = QtWidgets.QAction(MainWindow)
@@ -328,6 +344,10 @@ class Ui_MainWindow(object):
         self.actionQuit.triggered.connect(self.closeEvent)  # type: ignore
         self.actionMaximize.triggered.connect(MainWindow.showMaximized)  # type: ignore
         self.actionNormal.triggered.connect(MainWindow.showNormal)  # type: ignore
+        self.actionBrowse_Dataset.triggered.connect(self.open_directory)  # type: ignore
+        self.actionBrowse_Noise_Dataset.triggered.connect(self.open_directory)  # type: ignore
+        self.actionBrowse_Raw_Dataset.triggered.connect(self.open_directory)  # type: ignore
+
         self.quitButton.clicked.connect(self.closeEvent)  # type: ignore
         # TODO : add action for record, browse and other buttons button
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
@@ -407,8 +427,7 @@ class Ui_MainWindow(object):
         self.actionMaximize.setText(_translate("MainWindow", "Maximize"))
         self.actionMaximize.setStatusTip(_translate("MainWindow", "Maximize the application window"))
 
-    @staticmethod
-    def closeEvent():
+    def closeEvent(self):
         msg = QMessageBox()
 
         msg.setWindowTitle("Closing Application")
@@ -419,9 +438,18 @@ class Ui_MainWindow(object):
 
         x = msg.exec_()
         if x == QMessageBox.Yes:
-            if QProcess.state() == QProcess.Running:
-                QProcess.kill()
+            if self.p != None:
+                QProcess.kill(self.p)
             MainWindow.close()
+            sys.exit()
+
+
+    def open_directory(self):
+        self.console("Opening directory")
+        # Opens the directory where the dataset is stored
+        self.console(f"Opening directory {DATASET_ROOT}")
+        os.system(f'explorer "{DATASET_ROOT}"')  # Opens the folder in the default file explorer
+
 
     def updateImageSize(self):
         # Get the current size of the QTextEdit
@@ -436,12 +464,12 @@ class Ui_MainWindow(object):
         # Set the HTML content in the QTextEdit
         self.waveformViewer.setHtml(image_html)
 
-    def message(self, s):
+    def console(self, s):
         self.consoleBrowser.append(s)
 
     def start_process(self):
         if self.p is None:  # No process running.
-            self.message("Executing process")
+            self.console("Executing process")
             self.p = QProcess()  # Keep a reference to the QProcess (e.g. on self) while it's running.
             self.p.readyReadStandardOutput.connect(self.handle_stdout)
             self.p.readyReadStandardError.connect(self.handle_stderr)
@@ -465,12 +493,12 @@ class Ui_MainWindow(object):
         if progress:
             self.progressBar.setValue(progress)
 
-        self.message(stderr)
+        self.console(stderr)
 
     def handle_stdout(self):
         data = self.p.readAllStandardOutput()
         stdout = bytes(data).decode("utf8")
-        self.message(stdout)
+        self.console(stdout)
 
     def handle_state(self, state):
         states = {
@@ -479,10 +507,10 @@ class Ui_MainWindow(object):
             QProcess.Running: 'Running',
         }
         state_name = states[state]
-        self.message(f"State changed: {state_name}")
+        self.console(f"State changed: {state_name}")
 
     def process_finished(self):
-        self.message("Process finished.")
+        self.console("Process finished.")
         self.p = None
 
 
