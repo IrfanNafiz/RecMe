@@ -35,7 +35,11 @@ For a more user-friendly interaction, a graphical user interface (GUI) has been 
 
 This organized structure ensures a clear separation of concerns and makes it easy to locate and modify specific parts of the codebase according to their respective functionalities.
 
+### File Management and Dataset Creation
 
+The preprocessing step of the dataset management is implemented in the [audio_slicer.py](audio_slicer.py) file. It automatically preprocesses any `.wav` files in the `data\custom` directory and organizes then in the `audio` folder within the previously mentioned folder for training purposes. The `noise` folder contains noise recordings from the dataset collected as will be explained in the next section.
+
+The [slicer.py](slicer.py) file supplies preprocessed noises to the training model.
 
 ## Dataset Directory
 
