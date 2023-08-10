@@ -1,7 +1,7 @@
 <br/>
 <p align="center">
   <a href="https://github.com/IrfanNafiz/RecMe">
-    <img src="\pyqt5_ui\icons\voice_recognition.png" alt="Logo" width="80" height="80">
+    <img src="https://github.com/IrfanNafiz/RecMe/blob/main/pyqt5_ui/icons/voice-recognition.png" alt="Logo" width="80" height="80">
   </a>
 
   <h3 align="center">RecMe - The Speaker Identifier</h3>
