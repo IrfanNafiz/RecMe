@@ -67,13 +67,19 @@ Simply run the following code in the parent directory:
 
 ### Console Application
 To use the application in a console, you can run the following code in the project directory terminal
-"""python app.py"""
+'''
+python app.py
+'''
 To turn on DEBUG mode, pass the argument -d into hte code as follows
-"""python app.py -d"""
+'''
+python app.py -d
+'''
 
 ### GUI Application
 To use the GUI Application, run the following code in the parent directory:
-'''python guiapp.py'''
+'''
+python guiapp.py
+'''
 
 ### Builds
 You can also access the [builds](\builds) folder to install the application using the **setup.exe**, which will automatically install necessary components to run the application, and launch the application using **RecMe.exe** in the installation directory.
