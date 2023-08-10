@@ -67,9 +67,7 @@ Simply run the following code in the parent directory:
 
 ### Console Application
 To use the application in a console, you can run the following code in the project directory terminal
-'''
-python app.py
-'''
+'''python app.py'''
 To turn on DEBUG mode, pass the argument -d into hte code as follows
 '''
 python app.py -d
