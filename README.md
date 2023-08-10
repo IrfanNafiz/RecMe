@@ -7,7 +7,7 @@
   <h3 align="center">RecMe - The Speaker Identifier</h3>
 
   <p align="center">
-RecMe-VoiceRecognizer: A voice recognition system showcasing DSP techniques and machine learning for accurate speaker identification using a 1D-Convolutional Deep Neural Network.
+A voice recognition system showcasing DSP techniques and machine learning for accurate speaker identification using a 1D-Convolutional Deep Neural Network.
     <br/>
     <br/>
     <a href="https://github.com/IrfanNafiz/RecMe"><strong>Explore the docs »</strong></a>
@@ -20,9 +20,7 @@ RecMe-VoiceRecognizer: A voice recognition system showcasing DSP techniques and 
 
 ![Downloads](https://img.shields.io/github/downloads/IrfanNafiz/RecMe/total) ![Contributors](https://img.shields.io/github/contributors/IrfanNafiz/RecMe?color=dark-green) ![Forks](https://img.shields.io/github/forks/IrfanNafiz/RecMe?style=social) ![Stargazers](https://img.shields.io/github/stars/IrfanNafiz/RecMe?style=social) ![Issues](https://img.shields.io/github/issues/IrfanNafiz/RecMe) ![License](https://img.shields.io/github/license/IrfanNafiz/RecMe)
 
-# RecMe-VoiceRecognizer
-
-**RecMe-VoiceRecognizer** is a significant component of the final project for EEE332 Digital Signal Processing Lab 1. The project was conducted under the expert guidance of **Prof. Dr. Md. Raseduzzaman** at **Shahjalal University of Science and Technology**. This voice recognition system aims to showcase the application of digital signal processing techniques and machine learning in the field of voice analysis and recognition using a 1D-Convolutional Deep Neural Network.
+**RecMe-The Speaker Identifier** is a significant component of the final project for EEE332 Digital Signal Processing Lab 1. The project was conducted under the expert guidance of **Prof. Dr. Md. Raseduzzaman** at **Shahjalal University of Science and Technology**. This voice recognition system aims to showcase the application of digital signal processing techniques and machine learning in the field of voice analysis and recognition using a 1D-Convolutional Deep Neural Network.
 
 The project demonstrates the practical utilization of DSP concepts, and this repository specifically focuses on the voice recognition aspect. The goal is to provide an efficient and accurate system for identifying and distinguishing speakers based on their vocal characteristics.
 
