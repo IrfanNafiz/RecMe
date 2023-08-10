@@ -6,6 +6,9 @@ Last modified: 8/8/2023
 Hardware Used: GPU Nvidia RTX 3060 4GB built on an AMD Ryzen-7 5800H 16 Core CPU
 Credits: Keras Speeker Recognition Example
 """
+import sys
+
+from keras.optimizers.schedules.learning_rate_schedule import ExponentialDecay
 
 import resampler
 import slicer
@@ -48,6 +51,7 @@ import numpy as np
 
 import tensorflow as tf
 from tensorflow import keras
+from tensorflow.python.keras.utils.vis_utils import plot_model
 
 from pathlib import Path
 from IPython.display import display, Audio
@@ -68,7 +72,7 @@ DATASET_NOISE_PATH = os.path.join(DATASET_ROOT, NOISE_SUBFOLDER)
 
 # Percentage of samples to use for validation
 VALID_SPLIT = 0.2
-SHUFFLE_SEED = 43
+SHUFFLE_SEED = 420
 SAMPLING_RATE = 16000
 
 # The factor to multiply the noise with according to:
@@ -76,7 +80,7 @@ SAMPLING_RATE = 16000
 #      where prop = sample_amplitude / noise_amplitude
 SCALE = 0.5
 
-BATCH_SIZE = 4
+BATCH_SIZE = 6
 EPOCHS = 100
 
 
@@ -146,6 +150,10 @@ if __name__ == '__main__':
     """
     ## Sorting the dataset within Custom folder
     """
+
+    # if model_logs folder exists, delete it and all its contents
+    if os.path.exists("model_logs"):
+        shutil.rmtree("model_logs")
 
     # If folder `audio`, does not exist, create it, otherwise do nothing
     if os.path.exists(DATASET_AUDIO_PATH) is False:
@@ -315,28 +323,44 @@ if __name__ == '__main__':
 
         x = residual_block(inputs, 16, 2)
         x = residual_block(x, 32, 2)
-        x = residual_block(x, 64, 3)
-        x = residual_block(x, 128, 3)
-        x = residual_block(x, 128, 3)
+        x = residual_block(x, 32, 2)
+        x = residual_block(x, 64, 2)
+        x = residual_block(x, 64, 2)
 
         x = keras.layers.AveragePooling1D(pool_size=3, strides=3)(x)
         x = keras.layers.Flatten()(x)
-        x = keras.layers.Dense(256, activation="relu")(x)
         x = keras.layers.Dense(128, activation="relu")(x)
+        x = keras.layers.Dropout(0.3)(x)
+        x = keras.layers.Dense(16, activation="relu")(x)
+
 
         outputs = keras.layers.Dense(num_classes, activation="softmax", name="output")(x)
 
         return keras.models.Model(inputs=inputs, outputs=outputs)
-
 
     model = build_model((SAMPLING_RATE // 2, 1), len(class_names))
 
     print("\n _________MODEL SUMMARY__________:")
     model.summary()
 
+    # plot_model(model, to_file='model_architecture.png', show_shapes=True)
+
+    # input("Press Enter to continue...")
+
+    initial_learning_rate = 0.001
+    decay_steps = 1000
+    decay_rate = 0.5
+
+    # Create a learning rate scheduler
+    lr_schedule = ExponentialDecay(
+        initial_learning_rate, decay_steps, decay_rate, staircase=True
+    )
+
     # Compile the model using Adam's default learning rate
     model.compile(
-        optimizer="Adam", loss="sparse_categorical_crossentropy", metrics=["accuracy"]
+        optimizer=tf.keras.optimizers.Adam(learning_rate=lr_schedule),
+        loss="sparse_categorical_crossentropy",
+        metrics=["accuracy"]
     )
 
     # Add callbacks:
@@ -344,6 +368,7 @@ if __name__ == '__main__':
     # 'ModelCheckPoint' to always keep the model that has the best val_accuracy
     model_save_filename = "model.h5"
 
+    tensorboard_cb = keras.callbacks.TensorBoard(log_dir="model_logs", histogram_freq=1)
     earlystopping_cb = keras.callbacks.EarlyStopping(patience=10, restore_best_weights=True)
     mdlcheckpoint_cb = keras.callbacks.ModelCheckpoint(model_save_filename, verbose=1,
                                                        monitor="val_accuracy", save_best_only=True)
@@ -356,7 +381,7 @@ if __name__ == '__main__':
         train_ds,
         epochs=EPOCHS,
         validation_data=valid_ds,
-        callbacks=[earlystopping_cb, mdlcheckpoint_cb],
+        callbacks=[earlystopping_cb, mdlcheckpoint_cb, tensorboard_cb],
     )
 
     """
@@ -409,4 +434,5 @@ if __name__ == '__main__':
                     class_names[y_pred[index]],
                 )
             )
-            display(Audio(audios[index, :, :].squeeze(), rate=SAMPLING_RATE))
+            # display(Audio(audios[index, :, :].squeeze(), rate=SAMPLING_RATE))
+
