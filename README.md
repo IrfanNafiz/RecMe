@@ -63,21 +63,23 @@ A working microphone is necessary in order to capture your voice for the applica
 ### Python Libraries: 
 A **requirements.txt** file is provided with all the necessary installations for running the application.
 Simply run the following code in the parent directory:
-> pip install requirements.txt
+```pip install requirements.txt```
 
 ### Console Application
 To use the application in a console, you can run the following code in the project directory terminal
-'''python app.py'''
+```
+python app.py
+```
 To turn on DEBUG mode, pass the argument -d into hte code as follows
-'''
+```
 python app.py -d
-'''
+```
 
 ### GUI Application
 To use the GUI Application, run the following code in the parent directory:
-'''
+```
 python guiapp.py
-'''
+```
 
 ### Builds
 You can also access the [builds](\builds) folder to install the application using the **setup.exe**, which will automatically install necessary components to run the application, and launch the application using **RecMe.exe** in the installation directory.
