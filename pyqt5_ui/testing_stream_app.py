@@ -33,3 +33,4 @@ sys.stdout.write("Script stdout 6\n")
 sys.stdout.write("Script stdout 7\n")
 sys.stdout.write("website=www.mfitzp.com\n")
 flush_then_wait()
+

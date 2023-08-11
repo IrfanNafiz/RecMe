@@ -71,8 +71,8 @@ DATASET_AUDIO_PATH = os.path.join(DATASET_ROOT, AUDIO_SUBFOLDER)
 DATASET_NOISE_PATH = os.path.join(DATASET_ROOT, NOISE_SUBFOLDER)
 
 # Percentage of samples to use for validation
-VALID_SPLIT = 0.2
-SHUFFLE_SEED = 420
+VALID_SPLIT = 0.15
+SHUFFLE_SEED = 12
 SAMPLING_RATE = 16000
 
 # The factor to multiply the noise with according to:
@@ -80,7 +80,7 @@ SAMPLING_RATE = 16000
 #      where prop = sample_amplitude / noise_amplitude
 SCALE = 0.5
 
-BATCH_SIZE = 6
+BATCH_SIZE = 8
 EPOCHS = 100
 
 
@@ -140,6 +140,22 @@ def audio_to_fft(audio):
     return tf.math.abs(fft[:, : (audio.shape[1] // 2), :])
 
 if __name__ == '__main__':
+
+    # TODO DLT dummy code for UI console checking
+    # print("Speaker:\33[92m GREEN \33[0m\tPredicted:\33[91m RED \33[0m")
+    # # print something yellow
+    # print("\33[93m YELLOW \33[0m")
+    # # print something blue
+    # input("Press Enter to continue...")
+    # # print something red
+    # print("\33[91m RED \33[0m")
+    # input("Press Enter to continue... YO YOU DID IT")
+    # user_input = input("Are you working? (y/n)\n>> ").lower()
+    # while user_input not in ['y', 'n']:
+    #     user_input = input("Are you working? (y/n)\n>> ")
+    # print("You said", user_input)
+    # input("THIS IS THE END OF THE DLT DUMMY CODE!!!!")
+
     """
     # Data preparation
 
@@ -154,6 +170,14 @@ if __name__ == '__main__':
     # if model_logs folder exists, delete it and all its contents
     if os.path.exists("model_logs"):
         shutil.rmtree("model_logs")
+
+    # if temp folder exists in DATASET_AUDIO_DIRECTORY, delete it and all its contents
+    if os.path.exists("data/custom/audio/temp"):
+        shutil.rmtree("data/custom/audio/temp")
+
+    # if temp folder exists in DATASET_ROOT_DIRECTORY, delete it and all its contents
+    if os.path.exists("data/custom/temp"):
+        shutil.rmtree("data/custom/temp")
 
     # If folder `audio`, does not exist, create it, otherwise do nothing
     if os.path.exists(DATASET_AUDIO_PATH) is False:
@@ -175,7 +199,7 @@ if __name__ == '__main__':
                     os.path.join(DATASET_ROOT, folder),
                     os.path.join(DATASET_NOISE_PATH, folder),
                 )
-            else:
+            else:  # NOTE if temp folder exists in DATASET_ROOT_DIRECTORY, delete it beforehand because otherwise it will cause an error in training as temp folder will be shifted to audio dataset folder
                 # Otherwise, it should be a speaker folder, then move it to
                 # `audio` folder
                 shutil.move(
@@ -276,12 +300,11 @@ if __name__ == '__main__':
 
     # Create 2 datasets, one for training and the other for validation
     train_ds = paths_and_labels_to_dataset(train_audio_paths, train_labels)
-    train_ds = train_ds.shuffle(buffer_size=BATCH_SIZE * 8, seed=SHUFFLE_SEED).batch(
-        BATCH_SIZE
-    )
+    train_ds = train_ds.shuffle(buffer_size=BATCH_SIZE * 8, seed=SHUFFLE_SEED).batch(BATCH_SIZE)
 
     valid_ds = paths_and_labels_to_dataset(valid_audio_paths, valid_labels)
     valid_ds = valid_ds.shuffle(buffer_size=BATCH_SIZE * 8, seed=SHUFFLE_SEED).batch(BATCH_SIZE) # batch size is 32 for validation set
+    # valid_ds = valid_ds.shuffle(buffer_size=BATCH_SIZE * 8, seed=SHUFFLE_SEED).batch(BATCH_SIZE) # batch size is 32 for validation set
 
 
     # Add noise to the training set
@@ -306,6 +329,25 @@ if __name__ == '__main__':
     """
 
 
+    def resnet_block(inputs, filters, kernel_size=3, stride=1, activation='relu'):
+        x = keras.layers.Conv1D(filters, kernel_size=kernel_size, strides=stride, padding='same')(inputs)
+        x = tf.keras.layers.BatchNormalization()(x)
+        x = keras.layers.Activation(activation)(x)
+
+        x = keras.layers.Conv1D(filters, kernel_size=kernel_size, strides=1, padding='same')(x)
+        x = tf.keras.layers.BatchNormalization()(x)
+
+        if stride != 1 or inputs.shape[-1] != filters:
+            shortcut = keras.layers.Conv1D(filters, kernel_size=1, strides=stride, padding='same')(inputs)
+            shortcut = tf.keras.layers.BatchNormalization()(shortcut)
+        else:
+            shortcut = inputs
+
+        x = keras.layers.Add()([x, shortcut])
+        x = keras.layers.Activation(activation)(x)
+
+        return x
+
     def residual_block(x, filters, conv_num=3, activation="relu"):
         # Shortcut
         s = keras.layers.Conv1D(filters, 1, padding="same")(x)
@@ -317,7 +359,6 @@ if __name__ == '__main__':
         x = keras.layers.Activation(activation)(x)
         return keras.layers.MaxPool1D(pool_size=2, strides=2)(x)
 
-
     def build_model(input_shape, num_classes):
         inputs = keras.layers.Input(shape=input_shape, name="input")
 
@@ -325,12 +366,23 @@ if __name__ == '__main__':
         x = residual_block(x, 32, 2)
         x = residual_block(x, 32, 2)
         x = residual_block(x, 64, 2)
-        x = residual_block(x, 64, 2)
+        #
+        # x = resnet_block(inputs, 16)
+        # x = resnet_block(x, 16)
+        # x = resnet_block(x, 16)
+        # x = resnet_block(x, 16)
+
+        # x = resnet_block(inputs, 16)
+        # x = resnet_block(x, 16)
+        # x = residual_block(x, 16, 2)
+        # x = residual_block(x, 16, 2)
 
         x = keras.layers.AveragePooling1D(pool_size=3, strides=3)(x)
         x = keras.layers.Flatten()(x)
-        x = keras.layers.Dense(128, activation="relu")(x)
-        x = keras.layers.Dropout(0.3)(x)
+        x = keras.layers.Dense(32, activation="relu")(x)  # 32
+        x = keras.layers.Dropout(0.2)(x)
+        # x = keras.layers.Dense(64, activation="relu")(x)  # 32
+        # x = keras.layers.Dropout(0.1)(x)
         x = keras.layers.Dense(16, activation="relu")(x)
 
 
@@ -347,9 +399,9 @@ if __name__ == '__main__':
 
     # input("Press Enter to continue...")
 
-    initial_learning_rate = 0.001
-    decay_steps = 1000
-    decay_rate = 0.5
+    initial_learning_rate = 0.0001
+    decay_steps = 250
+    decay_rate = 0.7
 
     # Create a learning rate scheduler
     lr_schedule = ExponentialDecay(
@@ -370,7 +422,7 @@ if __name__ == '__main__':
 
     tensorboard_cb = keras.callbacks.TensorBoard(log_dir="model_logs", histogram_freq=1)
     earlystopping_cb = keras.callbacks.EarlyStopping(patience=10, restore_best_weights=True)
-    mdlcheckpoint_cb = keras.callbacks.ModelCheckpoint(model_save_filename, verbose=1,
+    mdlcheckpoint_cb = keras.callbacks.ModelCheckpoint(model_save_filename, verbose=2,
                                                        monitor="val_accuracy", save_best_only=True)
 
     """
@@ -382,7 +434,7 @@ if __name__ == '__main__':
         epochs=EPOCHS,
         validation_data=valid_ds,
         callbacks=[earlystopping_cb, mdlcheckpoint_cb, tensorboard_cb],
-    )
+        verbose=2)
 
     """
     ## Evaluation

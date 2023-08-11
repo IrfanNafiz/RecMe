@@ -66,7 +66,7 @@ def delete_temp():
         shutil.rmtree(os.path.join(DATASET_ROOT, 'temp'))
     print("Temp files deleted successfully!")
 
-
+# TODO setCustomRecord situation is not created yet
 # set variable for if you want to record a custom audio or use a preexisting audio in the root folder named "temp_record.wav"
 setCustomRecord = True  # by default set to true, if you want to use a preexisting audio set to false
 def record_protocol():  # when record is pressed this will happen
@@ -144,6 +144,7 @@ def record_and_predict(debug=False):
     )
 
     prediction = []
+    speaker_confidence_scores = {}  # Store confidence scores for each speaker
     for audios, labels in temp_ds.take(1):
         # Get the signal FFT
         ffts = train_model.audio_to_fft(audios)
@@ -166,6 +167,10 @@ def record_and_predict(debug=False):
             print("Index of prediction using argmax: ", y_pred)
             print("______________________________")
 
+            # Store confidence scores for each speaker
+        for index in range(len(y_pred)):
+            speaker_confidence_scores.setdefault(class_names[y_pred[index]], []).append(y_pred_probs[index])
+
         for index in range(len(y_pred)):
             # For every sample, print the true and predicted label
             # as well as run the voice with the noise
@@ -180,7 +185,6 @@ def record_and_predict(debug=False):
     if len(max_pred) == 1:
         print("\nFinal prediction is that the speaker may be \33[92m{}\33[0m".format(str(max_pred)))
         print("Probability of prediction is \33[92m{}\33[0m".format(str(np.average(y_pred_probs)*100) + "%"))
-        return max_pred[0]
     elif len(max_pred) > 2:
         print("\nFinal prediction is that the speaker may be one of \33[91m{}\33[0m".format(str(max_pred)))
         print("It is not possible to determine the speaker with high confidence.")
@@ -190,6 +194,20 @@ def record_and_predict(debug=False):
         print("It is not possible to determine the speaker with high confidence.")
         print("Please try again!")
 
+    # Calculate weighted probabilities for each speaker
+    weighted_speaker_probs = {}
+    for speaker, conf_scores in speaker_confidence_scores.items():
+        average_conf_score = np.mean(conf_scores)  # Calculate the average confidence score
+        weighted_speaker_probs[speaker] = average_conf_score
+
+    # Get the most highly predicted speaker
+    most_highly_predicted_speaker = max(weighted_speaker_probs, key=weighted_speaker_probs.get)
+    probability_of_most_highly_predicted_speaker = weighted_speaker_probs[most_highly_predicted_speaker]
+
+    print("Most Highly Predicted Speaker:", most_highly_predicted_speaker)
+    print("Probability of Most Highly Predicted Speaker:", probability_of_most_highly_predicted_speaker)
+
+    max_pred = ['Irfan_Nafiz_Shahan', 'Ad_Deen_Mahbub']
     return max_pred
 
 
@@ -238,8 +256,7 @@ def prompt_name_and_save(audio):
 
 
 def wait_for_enter():
-    pass
-    # input("Press ENTER to continue.")
+    input("Press ENTER/CMD to continue.")
 
 
 def run_script(script_path):
@@ -248,11 +265,13 @@ def run_script(script_path):
 
 def retraining_protocol():
     # retrain the model by running train_model.py
+    print("Retraining the model...")
     run_script('train_model.py')
 
 
 def preprocessing_protocol():
     # slice and save any new audio in audio folder
+    delete_temp()
     run_script('audio_slicer.py')
     print("Audio sliced, preprocessed and saved successfully!")
 
@@ -291,28 +310,64 @@ def end_credits():
           "\nSylhet, Bangladesh.")
 
 
-def import_arguments(d):
+def add_person():
+    print("Please record a new dataset, saying 'Hello D S P 1 2 3 4 5' about 10 times. "
+          "\nEnsure you dont have any background noise, and make sure you pronounce "
+          "\nthem normally as you would.")
+    wait_for_enter()
+    audio = record_audio()
+    while audio == None:
+        audio = record_audio()
+
+    prompt_name_and_save(audio)
+
+    # slice and save any new audio in audio folder
+    preprocessing_protocol()
+
+    # retrain the model
+    retraining_protocol()
+
+def continue_or_exit():
+    # ask if the user wants to continue
+    user_input = input("Do you want to try recording again? Y/N").upper()
+    while user_input not in ["Y", "N"]:
+        user_input = input("Invalid input. Please enter Y or N.\n>>").upper()
+    if user_input == "N":
+        end_credits()
+        return False
+    else:
+        return True
+
+def import_arguments(d, ui_mode):
     if len(sys.argv) != 2:
-        print("For debug mode use -d as argument. Example: python app.py -d")
+        print("For debug mode use -d as an argument. Example: python app.py -d")
 
     if len(sys.argv) == 2:
-        debug = sys.argv[1]
-        if debug.lower() == '-d':
+        arg = sys.argv[1]
+
+        if arg.lower() == '-d':
             d = True
             print("DEBUG MODE")
-
+        elif arg.lower() == '-ui':
+            ui_mode = True
+            # print("UI MODE")
         else:
-            print("For debug mode use -d as argument. Example: python app.py -d")
+            print("For debug mode use -d as an argument. Example: python app.py -d")
 
-    return d
+    return d, ui_mode
 
-
+# application-specific arguments and variables
 ApplicationRunning = True
 debug = False
+ui_mode = False
+
 if __name__ == '__main__':
 
-    debug = import_arguments(debug)
+    debug, ui_mode = import_arguments(debug, ui_mode)
+    percent_complete(5)
+
     while ApplicationRunning:
+
         noises, class_names, model = load_necessary_files()
         username = record_and_predict(debug)
 
@@ -320,67 +375,29 @@ if __name__ == '__main__':
             username = [username]
 
         if len(username) > 1:
-            print(f"Multiple users detected: {len(username)} users. "
-                  "Please try again.")
-            continue
+            user_input = input("Multiple users detected. Do you want to add a new user? Y/N\n>>").upper()
+            while user_input not in ["Y", "N"]:
+                user_input = input("Invalid input. Please enter Y or N.\n>>").upper()
+            if user_input == "Y":
+                add_person()
+                ApplicationRunning = continue_or_exit()
+                if ApplicationRunning == False:
+                    break
+                else:
+                    continue
+
         # ask if the prediction is correct
-        user_input = input("Is the prediction correct? Y/N\n>>").upper()
-        while user_input not in ["Y", "N"]:
-            user_input = input("Invalid input. Please enter Y or N.\n>>").upper()
-
-        if user_input == "Y":
-            print(f"Welcome back {username[0]}!")
-
-        # if no then ask to record a passphrase dataset
         else:
-            print("Please record a new dataset, saying 'Hello D S P 1 2 3 4 5' about 10 times. "
-                  "\nEnsure you dont have any background noise, and make sure you pronounce "
-                  "\nthem normally as you would.")
-            wait_for_enter()
+            user_input = input("Is the prediction correct? Y/N\n>>").upper()
+            while user_input not in ["Y", "N"]:
+                user_input = input("Invalid input. Please enter Y or N.\n>>").upper()
 
-            audio = record_audio()
-            while audio == None:
-                audio = record_audio()
+            if user_input == "Y":
+                print(f"Welcome back {username[0]}!")
 
-            prompt_name_and_save(audio)
-
-            # slice and save any new audio in audio folder
-            preprocessing_protocol()
-
-            # retrain the model
-            retraining_protocol()
+            # if no then ask to record a passphrase dataset
+            else:
+                add_person()
 
         # ask if the user wants to continue
-        user_input = input("Do you want to try recording again? Y/N").upper()
-        while user_input not in ["Y", "N"]:
-            user_input = input("Invalid input. Please enter Y or N.\n>>").upper()
-        if user_input == "N":
-            ApplicationRunning = False
-            end_credits()
-            break
-
-
-# def predict_speaker_ml(audio):
-#     elif model == "ml":
-#         guess = predict_speaker_ml(audio)  # TODO: make this predict_speaker_ml function, return false if no guess
-#
-#     if guess: # TODO: Show these prints in a display box
-#         print("Hello, is this ___?")
-#         cmd = input("Y/N>>") # TODO: Make this a button
-#         while cmd not in ["Y", "N"]:
-#             if cmd == "Y":
-#                 print("Hey there ____!")
-#                 break
-#             # if guess not correct then prompt the user for name
-#             else:
-#                 print("Oh I don't recognize you, can you please provide your name?")
-#                 # TODO: Open a input name box here
-#                 prompt_name(audio)
-#                 break
-#
-#     # if no guess valid then just prompt directly
-#     else:
-#         prompt_name(audio)
-
-
-
+        ApplicationRunning = continue_or_exit()

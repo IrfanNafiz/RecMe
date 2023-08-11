@@ -29,12 +29,24 @@ class SpeakerRecognitionApp(QMainWindow):
         self.setup_ui()
 
     def setup_ui(self):
+        self.refresh_folder_list()  # Call this function to populate the list initially
 
         # Connect the itemDoubleClicked signal to the slot
         self.ui.folderListWidget.itemDoubleClicked.connect(self.open_selected_folder)
 
         # Populate the list widget with folder names
         directory = DATASET_AUDIO_PATH  # Replace with your actual directory path
+        folder_names = [folder for folder in os.listdir(directory) if os.path.isdir(os.path.join(directory, folder))]
+        for folder_name in folder_names:
+            item = QListWidgetItem(folder_name)
+            self.ui.folderListWidget.addItem(item)
+
+    def refresh_folder_list(self):
+        # Clear the existing items in the list widget
+        self.ui.folderListWidget.clear()
+
+        # Populate the list widget with updated folder names
+        directory = DATASET_AUDIO_PATH
         folder_names = [folder for folder in os.listdir(directory) if os.path.isdir(os.path.join(directory, folder))]
         for folder_name in folder_names:
             item = QListWidgetItem(folder_name)
