@@ -1,0 +1,12 @@
+tensorflow=2.10.0
+numpy
+matplotlib
+pyqt5
+pyqt5-stubs
+PyQt5Designer
+pyqt5-tools
+SpeechRecognition
+PyAudio
+joblib
+soundfile
+librosa

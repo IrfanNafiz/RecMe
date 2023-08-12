@@ -25,8 +25,6 @@ from qtconsole.rich_jupyter_widget import RichJupyterWidget
 from qtconsole.inprocess import QtInProcessKernelManager
 from PyQt5.QtCore import QProcess
 
-from app import add_person, retraining_protocol
-
 AUDIO_SUBFOLDER = "audio"
 NOISE_SUBFOLDER = "noise"
 
