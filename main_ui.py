@@ -159,37 +159,38 @@ class Ui_MainWindow(object):
         self.horizontalLayout_9.addLayout(self.verticalLayout_9)
         self.verticalLayout_10 = QtWidgets.QVBoxLayout()
         self.verticalLayout_10.setObjectName("verticalLayout_10")
-        self.viewerLabel = QtWidgets.QLabel(self.centralwidget)
-        font = QtGui.QFont()
-        font.setFamily("Rockwell")
-        font.setPointSize(12)
-        self.viewerLabel.setFont(font)
-        self.viewerLabel.setAlignment(QtCore.Qt.AlignCenter)
-        self.viewerLabel.setObjectName("viewerLabel")
-        self.verticalLayout_10.addWidget(self.viewerLabel)
+
+        # self.viewerLabel = QtWidgets.QLabel(self.centralwidget)
+        # font = QtGui.QFont()
+        # font.setFamily("Rockwell")
+        # font.setPointSize(12)
+        # self.viewerLabel.setFont(font)
+        # self.viewerLabel.setAlignment(QtCore.Qt.AlignCenter)
+        # self.viewerLabel.setObjectName("viewerLabel")
+        # self.verticalLayout_10.addWidget(self.viewerLabel)
         self.verticalLayout_7 = QtWidgets.QVBoxLayout()
         self.verticalLayout_7.setObjectName("verticalLayout_7")
+
         self.verticalLayout_6 = QtWidgets.QVBoxLayout()
         self.verticalLayout_6.setObjectName("verticalLayout_6")
 
-        # Load the image
-        self.image_path = EMPTY_PLOT_PATH
-        self.pixmap = QtGui.QPixmap(self.image_path)
+        # # Load the image
+        # self.image_path = EMPTY_PLOT_PATH
+        # self.pixmap = QtGui.QPixmap(self.image_path)
+        #
+        # # Create the waveform viewer widget
+        # self.waveformViewer = QtWidgets.QTextEdit(self.centralwidget)
+        # self.waveformViewer.setObjectName("waveformViewer")
+        # # Set the textEdit widget to read-only
+        # self.waveformViewer.setReadOnly(True)
+        #
+        # # self.updateImageSize()
+        #
+        # # comments the below two lines out if updateImageSize is used
+        # image_html = f'<img src="{self.image_path}">'
+        # self.waveformViewer.setHtml(image_html)
 
-        # Create the waveform viewer widget
-        self.waveformViewer = QtWidgets.QTextEdit(self.centralwidget)
-        self.waveformViewer.setObjectName("waveformViewer")
-        # Set the textEdit widget to read-only
-        self.waveformViewer.setReadOnly(True)
-
-        # self.updateImageSize()
-
-        # comments the below two lines out if updateImageSize is used
-        image_html = f'<img src="{self.image_path}">'
-        self.waveformViewer.setHtml(image_html)
-
-
-        self.verticalLayout_6.addWidget(self.waveformViewer)
+        # self.verticalLayout_6.addWidget(self.waveformViewer)
 
         self.recordButton = QtWidgets.QPushButton(self.centralwidget)
         font = QtGui.QFont()
@@ -371,7 +372,7 @@ class Ui_MainWindow(object):
 
         self.folderLabel.setText(_translate("MainWindow", "People in Dataset"))
 
-        self.viewerLabel.setText(_translate("MainWindow", "Waveform Viewier"))
+        # self.viewerLabel.setText(_translate("MainWindow", "Waveform Viewier"))
 
         self.recordButton.setStatusTip(_translate("MainWindow", "Press to start recording an audio for identification"))
         self.recordButton.setText(_translate("MainWindow", "Record"))
