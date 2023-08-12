@@ -89,6 +89,12 @@ A **requirements.txt** file is provided with all the necessary installations for
 Simply run the following code in the parent directory:
 ```pip install requirements.txt```
 
+### FFMPEG
+Please ensure ffmpeg is installed in your system. This installation is system specific. Follow [this](https://phoenixnap.com/kb/ffmpeg-windows) guide for Windows installation. Otherwise visit the [ffmpeg site](https://ffmpeg.org/download.html). 
+
+### Tensorflow-GPU
+Windows only supports tensorflow=2.10.0 for tensorflow gpu support. This requires further cuDNN and CUDA Toolkit installations. Visit [this site](https://deeplizard.com/learn/video/IubEtS2JAiY) for details on tensorflow gpu installation on Windows. Otherwise follows the [tensorflow site](https://www.tensorflow.org/install/pip). 
+
 ### Console Application
 To use the application in a console, you can run the following code in the project directory terminal
 ```
