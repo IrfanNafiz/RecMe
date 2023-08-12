@@ -2,6 +2,9 @@ import os
 import sys
 from PyQt5.QtWidgets import QApplication, QMainWindow, QListWidgetItem
 from main_ui import Ui_MainWindow
+from PyQt5.QtCore import QTimer
+import threading
+
 
 AUDIO_SUBFOLDER = "audio"
 NOISE_SUBFOLDER = "noise"
@@ -28,6 +31,10 @@ class SpeakerRecognitionApp(QMainWindow):
         self.ui.path = 'demo'
         self.setup_ui()
 
+        self.refresh_thread = threading.Thread(target=self.refresh_folder_list_threaded)
+        self.refresh_thread.daemon = True  # This will allow the thread to exit when the main program exits
+        self.refresh_thread.start()
+
     def setup_ui(self):
         self.refresh_folder_list()  # Call this function to populate the list initially
 
@@ -41,7 +48,15 @@ class SpeakerRecognitionApp(QMainWindow):
             item = QListWidgetItem(folder_name)
             self.ui.folderListWidget.addItem(item)
 
+
+    def refresh_folder_list_threaded(self):
+        while True:
+            self.refresh_folder_list()
+            # Sleep for 5 seconds before the next refresh
+            threading.Event().wait(5)
+
     def refresh_folder_list(self):
+
         # Clear the existing items in the list widget
         self.ui.folderListWidget.clear()
 
