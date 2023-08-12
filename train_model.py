@@ -3,7 +3,7 @@ Title: Speaker Recognition Application with FFT and Conv1Dnet
 Author: [Irfan Nafiz Shahan](https://www.github.com/irfannafiz)
 Date created: 10/5/2023
 Last modified: 8/8/2023
-Hardware Used: GPU Nvidia RTX 3060 4GB built on an AMD Ryzen-7 5800H 16 Core CPU
+Hardware Used: GPU Nvidia RTX 3060 6GB built on an AMD Ryzen-7 5800H 16 Core CPU
 Credits: Keras Speeker Recognition Example
 """
 import sys

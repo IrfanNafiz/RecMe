@@ -1,5 +1,7 @@
 import os
 import sys
+
+from PyQt5 import QtGui
 from PyQt5.QtWidgets import QApplication, QMainWindow, QListWidgetItem
 from main_ui import Ui_MainWindow
 from PyQt5.QtCore import QTimer
@@ -30,6 +32,7 @@ class SpeakerRecognitionApp(QMainWindow):
         self.ui.setupUi(self)
         self.ui.path = 'demo'
         self.setup_ui()
+
 
         self.refresh_thread = threading.Thread(target=self.refresh_folder_list_threaded)
         self.refresh_thread.daemon = True  # This will allow the thread to exit when the main program exits
@@ -78,6 +81,10 @@ class SpeakerRecognitionApp(QMainWindow):
 
 if __name__ == "__main__":
     app = QApplication(sys.argv)
+
+    icon_path = "F:\Documents (Laptop)\SUST\3rd Year 1st Semester\Courses\EEE-332 Digital Signal Processing I Lab\Project\RecMe-VoiceRecognizer\voice-recognition.ico"  # Replace with the actual path to your icon
+    app.setWindowIcon(QtGui.QIcon(icon_path))
+
     window = SpeakerRecognitionApp()
     window.show()
     sys.exit(app.exec_())

@@ -12,7 +12,7 @@
 # TODO 3. COMPLETED Make the addDataset button work, hence modify the app.py to run Add_person protocol
 # TODO 4. COMPLETED Make the trainModel button work, make it run the train_model.py script and display the output in the console
 # TODO 5. COMPLETED Add the same functionality to the filemenu options
-# TODO 6. Make the waveform viewer work, make the picture scale to the size of the window
+# TODO 6. COMMENTED OUT DEAL WITH LATER Make the waveform viewer work, make the picture scale to the size of the window
 
 import subprocess
 import os
@@ -95,7 +95,7 @@ class Ui_MainWindow(object):
 
     def setupUi(self, MainWindow):
         self.p = None
-        self.path = 'demo'  # TODO remove this before deployment
+        self.path = 'demo'
 
         MainWindow.setObjectName("MainWindow")
         MainWindow.setWindowModality(QtCore.Qt.WindowModal)
@@ -360,9 +360,12 @@ class Ui_MainWindow(object):
         self.commandLineEdit.returnPressed.connect(self.sendCommandButton.click)
         self.quitButton.clicked.connect(self.closeEvent)  # type: ignore
 
-
-
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
+
+    def adjustButtonSize(self):
+        new_button_width = 200  # Set the desired width
+        new_button_height = 60  # Set the desired height
+        self.ui.myButton.setFixedSize(new_button_width, new_button_height)
 
     def retranslateUi(self, MainWindow):
         _translate = QtCore.QCoreApplication.translate
@@ -374,20 +377,28 @@ class Ui_MainWindow(object):
 
         # self.viewerLabel.setText(_translate("MainWindow", "Waveform Viewier"))
 
+        new_button_width = 120  # Set the desired width
+        new_button_height = 30  # Set the desired height
+
         self.recordButton.setStatusTip(_translate("MainWindow", "Press to start recording an audio for identification"))
         self.recordButton.setText(_translate("MainWindow", "Record"))
+        self.recordButton.setFixedSize(new_button_width, new_button_height)
 
         self.retrainButton.setStatusTip(_translate("MainWindow", "Press to re-train the machine learning model"))
         self.retrainButton.setText(_translate("MainWindow", "Re-Train Model"))
+        self.retrainButton.setFixedSize(new_button_width, new_button_height)
 
         self.addButton.setStatusTip(_translate("MainWindow", "Press to add a new person to the dataset saying the passphrase 10 times"))
         self.addButton.setText(_translate("MainWindow", "Add Person"))
+        self.addButton.setFixedSize(new_button_width, new_button_height)
 
         self.sendCommandButton.setStatusTip(_translate("MainWindow", "Open the root dataset directory"))
         self.sendCommandButton.setText(_translate("MainWindow", "Send Command"))
+        # self.sendCommandButton.setFixedSize(new_button_width, new_button_height)
 
         self.quitButton.setStatusTip(_translate("MainWindow", "Press to quit the application"))
         self.quitButton.setText(_translate("MainWindow", "Quit"))
+        self.quitButton.setFixedSize(new_button_width, new_button_height)
 
         self.consoleLabel.setText(_translate("MainWindow", "Console Output"))
 
@@ -511,7 +522,7 @@ class Ui_MainWindow(object):
 
         self.commandLineEdit.clear()
 
-    def start_process(self): # TODO update list of person after adding a new person
+    def start_process(self): # TODO COMPLETED update list of person after adding a new person
         if self.p is None:  # No process running.
             self.console("Executing process")
             self.p = QProcess()  # Keep a reference to the QProcess (e.g. on self) while it's running.
