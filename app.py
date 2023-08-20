@@ -182,9 +182,24 @@ def record_and_predict(debug=False):
     if debug:
         print("Maximum occurence: ", max_pred)
 
+    # TODO make sure the most predicted speaker's average probability is given, and not the highest probability of all speakers
+    # Calculate weighted probabilities for each speaker
+    weighted_speaker_probs = {}
+    for speaker, conf_scores in speaker_confidence_scores.items():
+        average_conf_score = np.mean(conf_scores)  # Calculate the average confidence score
+        weighted_speaker_probs[speaker] = average_conf_score
+
+    # Get the most highly predicted speaker
+    most_highly_predicted_speaker = max(weighted_speaker_probs, key=weighted_speaker_probs.get)
+    probability_of_most_highly_predicted_speaker = weighted_speaker_probs[most_highly_predicted_speaker]
+
+    # print("Most Highly Predicted Speaker:", most_highly_predicted_speaker)
+    # print("Probability of Most Highly Predicted Speaker:", probability_of_most_highly_predicted_speaker)
+
+
     if len(max_pred) == 1:
-        print("\nFinal prediction is that the speaker may be \33[92m{}\33[0m".format(str(max_pred)))
-        print("Probability of prediction is \33[92m{}\33[0m".format(str(np.average(y_pred_probs)*100) + "%"))
+        print("\nFinal prediction is that the speaker may be \33[92m{}\33[0m".format(most_highly_predicted_speaker))
+        print("Probability of prediction is \33[92m{}\33[0m".format(str(probability_of_most_highly_predicted_speaker*100) + "%"))
     elif len(max_pred) > 2:
         print("\nFinal prediction is that the speaker may be one of \33[91m{}\33[0m".format(str(max_pred)))
         print("It is not possible to determine the speaker with high confidence.")
@@ -193,19 +208,6 @@ def record_and_predict(debug=False):
         print("\nFinal prediction is that the speaker may be either of \33[93m{}\33[0m".format(str(max_pred)))
         print("It is not possible to determine the speaker with high confidence.")
         print("Please try again!")
-
-    # # Calculate weighted probabilities for each speaker
-    # weighted_speaker_probs = {}
-    # for speaker, conf_scores in speaker_confidence_scores.items():
-    #     average_conf_score = np.mean(conf_scores)  # Calculate the average confidence score
-    #     weighted_speaker_probs[speaker] = average_conf_score
-    #
-    # # Get the most highly predicted speaker
-    # most_highly_predicted_speaker = max(weighted_speaker_probs, key=weighted_speaker_probs.get)
-    # probability_of_most_highly_predicted_speaker = weighted_speaker_probs[most_highly_predicted_speaker]
-    #
-    # print("Most Highly Predicted Speaker:", most_highly_predicted_speaker)
-    # print("Probability of Most Highly Predicted Speaker:", probability_of_most_highly_predicted_speaker)
 
     return max_pred
 

@@ -437,8 +437,10 @@ class Ui_MainWindow(object):
 
         x = msg.exec_()
         if x == QMessageBox.Yes:
-            if self.p != None and self.p.state() != QProcess.NotRunning:
-                self.stop_process(self.p)
+            if self.p is not None and self.p.state() != QProcess.NotRunning:
+                # print("Stopping process")
+                self.stop_process()
+                pass
             MainWindow.close()
             sys.exit()
 
