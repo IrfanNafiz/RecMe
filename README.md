@@ -7,10 +7,7 @@
   <h3 align="center">RecMe - The Speaker Identifier</h3>
 
   <p align="center">
-A voice recognition system showcasing DSP techniques and machine learning for accurate speaker identification using a 1D-Convolutional Deep Neural Network.
-    <br/>
-    <br/>
-    <a href="https://github.com/IrfanNafiz/RecMe"><strong>Explore the docs »</strong></a>
+A voice recognition system showcasing DSP techniques and machine learning for accurate speaker identification using a 1D-Convolutional Deep Neural Network with a focus on minimal dataset necessity for Edge Devices.
     <br/>
     <br/>
     <a href="https://github.com/IrfanNafiz/RecMe/issues">Report Bug</a>
