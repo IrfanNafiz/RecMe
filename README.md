@@ -18,8 +18,10 @@ A voice recognition system showcasing DSP techniques and machine learning for ac
 
 **RecMe-The Speaker Identifier** is a significant component of the final project for EEE332 Digital Signal Processing Lab 1. The project was conducted under the expert guidance of **Prof. Dr. Md. Raseduzzaman** at **Shahjalal University of Science and Technology**. This voice recognition system aims to showcase the application of digital signal processing techniques and machine learning in the field of voice analysis and recognition using a 1D-Convolutional Deep Neural Network, and build a foundationary project on the utilization of minimal dataset because of edge device restrictions.
 
-The project demonstrates the practical utilization of DSP concepts, and this repository specifically focuses on the voice recognition aspect. The goal is to provide an efficient and accurate system for identifying and distinguishing speakers based on their vocal characteristics.
+The project demonstrates the practical utilization of DSP concepts, and this repository specifically focuses on the voice recognition aspect. The goal is to provide an efficient and accurate system for identifying and distinguishing speakers based on their vocal characteristics using minimal dataset.
 
+**Grade Received: A+ (4.0/4.0 GPA)
+**
 ## Table of Contents
 
 - [Code Organization](#code-organization)
