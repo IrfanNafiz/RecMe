@@ -16,7 +16,7 @@ A voice recognition system showcasing DSP techniques and machine learning for ac
 
 ![Downloads](https://img.shields.io/github/downloads/IrfanNafiz/RecMe/total) ![Contributors](https://img.shields.io/github/contributors/IrfanNafiz/RecMe?color=dark-green) ![Forks](https://img.shields.io/github/forks/IrfanNafiz/RecMe?style=social) ![Stargazers](https://img.shields.io/github/stars/IrfanNafiz/RecMe?style=social) ![Issues](https://img.shields.io/github/issues/IrfanNafiz/RecMe) ![License](https://img.shields.io/github/license/IrfanNafiz/RecMe)
 
-**RecMe-The Speaker Identifier** is a significant component of the final project for EEE332 Digital Signal Processing Lab 1. The project was conducted under the expert guidance of **Prof. Dr. Md. Raseduzzaman** at **Shahjalal University of Science and Technology**. This voice recognition system aims to showcase the application of digital signal processing techniques and machine learning in the field of voice analysis and recognition using a 1D-Convolutional Deep Neural Network.
+**RecMe-The Speaker Identifier** is a significant component of the final project for EEE332 Digital Signal Processing Lab 1. The project was conducted under the expert guidance of **Prof. Dr. Md. Raseduzzaman** at **Shahjalal University of Science and Technology**. This voice recognition system aims to showcase the application of digital signal processing techniques and machine learning in the field of voice analysis and recognition using a 1D-Convolutional Deep Neural Network, and build a foundationary project on the utilization of minimal dataset because of edge device restrictions.
 
 The project demonstrates the practical utilization of DSP concepts, and this repository specifically focuses on the voice recognition aspect. The goal is to provide an efficient and accurate system for identifying and distinguishing speakers based on their vocal characteristics.
 
@@ -35,7 +35,7 @@ The project's codebase is organized into different components, each serving a sp
 
 ### Training Model
 
-The core training of the model is implemented in the [train_model.py](train_model.py) script. This script is built upon the [Keras Speaker Recognition Example](https://keras.io/examples/audio/speaker_recognition_using_cnn/#introduction), adapting it to our project's requirements. It handles the training and evaluation of the speaker recognition model.
+The core training of the model is implemented in the [train_model.py](train_model.py) script. This script is built upon the [Keras Speaker Recognition Example](https://keras.io/examples/audio/speaker_recognition_using_cnn/#introduction), adapting it to our project's requirements and optimizing using TensorBoard for applicaiton in Minimal Dataset use cases. It handles the training and evaluation of the speaker recognition model.
 
 ### Console Based Application
 
