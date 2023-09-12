@@ -11,7 +11,6 @@ A voice recognition system showcasing DSP techniques and machine learning for ac
     <br/>
     <br/>
     <a href="https://github.com/IrfanNafiz/RecMe/issues">Report Bug</a>
-    .
   </p>
 </p>
 
