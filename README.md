@@ -1,4 +1,4 @@
-<br/>
+![lr](https://github.com/IrfanNafiz/RecMe/assets/63298621/acd8cb6e-ccf7-4662-8a42-bfd501589b90)<br/>
 <p align="center">
   <a href="https://github.com/IrfanNafiz/RecMe">
     <img src="https://github.com/IrfanNafiz/RecMe/blob/main/pyqt5_ui/icons/voice-recognition.png" alt="Logo" width="80" height="80">
@@ -16,7 +16,7 @@ A voice recognition system showcasing DSP techniques and machine learning for ac
 
 ![Downloads](https://img.shields.io/github/downloads/IrfanNafiz/RecMe/total) ![Contributors](https://img.shields.io/github/contributors/IrfanNafiz/RecMe?color=dark-green) ![Forks](https://img.shields.io/github/forks/IrfanNafiz/RecMe?style=social) ![Stargazers](https://img.shields.io/github/stars/IrfanNafiz/RecMe?style=social) ![Issues](https://img.shields.io/github/issues/IrfanNafiz/RecMe) ![License](https://img.shields.io/github/license/IrfanNafiz/RecMe)
 
-**RecMe-The Speaker Identifier** is a significant component of the final project for EEE332 Digital Signal Processing Lab 1. The project was conducted under the expert guidance of **Prof. Dr. Md. Raseduzzaman** at **Shahjalal University of Science and Technology**. This voice recognition system aims to showcase the application of digital signal processing techniques and machine learning in the field of voice analysis and recognition using a 1D-Convolutional Deep Neural Network, and build a foundationary project on the utilization of minimal dataset because of edge device restrictions.
+**RecMe-The Speaker Identifier** is a significant component of the final project for EEE332 Digital Signal Processing Lab 1. This voice recognition system aims to showcase the application of digital signal processing techniques and machine learning in the field of voice analysis and recognition using a 1D-Convolutional Deep Neural Network, and build a foundationary project on the utilization of minimal dataset because of edge device restrictions.
 
 The project demonstrates the practical utilization of DSP concepts, and this repository specifically focuses on the voice recognition aspect. The goal is to provide an efficient and accurate system for identifying and distinguishing speakers based on their vocal characteristics using minimal dataset.
 
@@ -40,10 +40,12 @@ The project's codebase is organized into different components, each serving a sp
 The core training of the model is implemented in the [train_model.py](train_model.py) script. This script is built upon the [Keras Speaker Recognition Example](https://keras.io/examples/audio/speaker_recognition_using_cnn/#introduction), adapting it to our project's requirements and optimizing using TensorBoard for applicaiton in Minimal Dataset use cases. It handles the training and evaluation of the speaker recognition model.
 
 ### Console Based Application
+<img width="264" alt="console" src="https://github.com/IrfanNafiz/RecMe/assets/63298621/7dfa0f94-e1bc-431e-ab5a-175aee2c71d0">
 
 The functionality of the application in a console-based environment is housed in the [app.py](app.py) script. This component provides a command-line interface for interacting with the trained model. Users can perform various actions, such as speaker recognition, using this application.
 
 ### Graphical User Interface (GUI)
+<img width="923" alt="main_ui" src="https://github.com/IrfanNafiz/RecMe/assets/63298621/9ee6a0c1-d0f9-45de-8128-7674651ba15a">
 
 For a more user-friendly interaction, a graphical user interface (GUI) has been developed using the PyQT5 framework. The base code and related `.ui` files are located in the [/pyqt5_ui/](/pyqt5_ui/) directory. The GUI provides an intuitive way for users to interact with the speaker recognition functionality.
 
@@ -111,6 +113,12 @@ python guiapp.py
 
 ### Builds
 You can also access the [builds](\builds) folder to install the application using the **setup.exe**, which will automatically install necessary components to run the application, and launch the application using **RecMe.exe** in the installation directory.
+
+## Results
+<img width="856" alt="abstract" src="https://github.com/IrfanNafiz/RecMe/assets/63298621/53bbee34-092c-431a-bb80-81a2e8dc4531">
+
+![acc](https://github.com/IrfanNafiz/RecMe/assets/63298621/6204772f-0c73-496e-8891-67413388e0cd)
+![loss](https://github.com/IrfanNafiz/RecMe/assets/63298621/f7806e4c-278a-47df-97ba-9942b77f0aa4)
 
 ## License
 
